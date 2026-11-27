@@ -9,7 +9,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MiniShopDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MiniShopDb"));
+    // Bağlantı cümlesi User Secrets'tan gelir; ayarlanmamışsa anlaşılır bir hata verelim
+    var connectionString = builder.Configuration.GetConnectionString("MiniShopDb")
+        ?? throw new InvalidOperationException("MiniShopDb bağlantı cümlesi bulunamadı. User Secrets ayarlı mı?");
+    options.UseSqlServer(connectionString);
 
     // Sadece geliştirmede: SQL loglarında parametre değerlerini de gösterir (@p='0' gibi)
     if (builder.Environment.IsDevelopment())

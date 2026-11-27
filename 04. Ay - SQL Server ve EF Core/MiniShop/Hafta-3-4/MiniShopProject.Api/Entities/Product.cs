@@ -1,6 +1,6 @@
 ﻿namespace MiniShopProject.Api.Entities;
 
-public class Product
+public class Product : BaseEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -9,6 +9,8 @@ public class Product
 
     public int CategoryId { get; set; }              // Foreign key kolonu
     public Category Category { get; set; } = null!;  // Navigation
+
+    public byte[] RowVersion { get; set; } = null!;  // Değerini SQL Server verir, her UPDATE'te değişir
 
     public List<OrderItem> OrderItems { get; set; } = new();
 }

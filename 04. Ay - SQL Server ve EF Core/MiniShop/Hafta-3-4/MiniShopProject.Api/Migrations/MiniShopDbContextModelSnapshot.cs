@@ -16,7 +16,7 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261125174632_InitialCreate";
+    public override string LastMigrationId => "20261127181424_AddBaseEntityAndRowVersion";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -35,6 +35,15 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
 
                 SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
 
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("datetime2");
+
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
+
+                b.Property<DateTime?>("ModifiedDate")
+                    .HasColumnType("datetime2");
+
                 b.Property<string>("Name")
                     .IsRequired()
                     .HasMaxLength(100)
@@ -43,7 +52,8 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
                 b.HasKey("Id");
 
                 b.HasIndex("Name")
-                    .IsUnique();
+                    .IsUnique()
+                    .HasFilter("[IsDeleted] = 0");
 
                 b.ToTable("Categories");
             });
@@ -56,10 +66,8 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
 
                 SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
 
-                b.Property<DateTime>("CreatedAt")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("datetime2")
-                    .HasDefaultValueSql("SYSDATETIME()");
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("datetime2");
 
                 b.Property<string>("Email")
                     .IsRequired()
@@ -71,15 +79,22 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
                     .HasMaxLength(50)
                     .HasColumnType("nvarchar(50)");
 
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
+
                 b.Property<string>("LastName")
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnType("nvarchar(50)");
 
+                b.Property<DateTime?>("ModifiedDate")
+                    .HasColumnType("datetime2");
+
                 b.HasKey("Id");
 
                 b.HasIndex("Email")
-                    .IsUnique();
+                    .IsUnique()
+                    .HasFilter("[IsDeleted] = 0");
 
                 b.ToTable("Customers");
             });
@@ -92,8 +107,17 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
 
                 SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
 
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("datetime2");
+
                 b.Property<int>("CustomerId")
                     .HasColumnType("int");
+
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
+
+                b.Property<DateTime?>("ModifiedDate")
+                    .HasColumnType("datetime2");
 
                 b.Property<DateTime>("OrderDate")
                     .ValueGeneratedOnAdd()
@@ -114,6 +138,15 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
 
                 b.Property<int>("ProductId")
                     .HasColumnType("int");
+
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("datetime2");
+
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
+
+                b.Property<DateTime?>("ModifiedDate")
+                    .HasColumnType("datetime2");
 
                 b.Property<int>("Quantity")
                     .HasColumnType("int");
@@ -144,6 +177,15 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
                 b.Property<int>("CategoryId")
                     .HasColumnType("int");
 
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("datetime2");
+
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
+
+                b.Property<DateTime?>("ModifiedDate")
+                    .HasColumnType("datetime2");
+
                 b.Property<string>("Name")
                     .IsRequired()
                     .HasMaxLength(150)
@@ -151,6 +193,12 @@ partial class MiniShopDbContextModelSnapshot : ModelSnapshot
 
                 b.Property<decimal>("Price")
                     .HasColumnType("decimal(18,2)");
+
+                b.Property<byte[]>("RowVersion")
+                    .IsConcurrencyToken()
+                    .IsRequired()
+                    .ValueGeneratedOnAddOrUpdate()
+                    .HasColumnType("rowversion");
 
                 b.Property<int>("Stock")
                     .ValueGeneratedOnAdd()

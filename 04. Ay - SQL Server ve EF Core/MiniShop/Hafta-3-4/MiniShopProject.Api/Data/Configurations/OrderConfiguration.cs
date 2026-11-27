@@ -10,6 +10,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         builder.ToTable("Orders");
         builder.HasKey(o => o.Id);
+        builder.HasQueryFilter(o => !o.IsDeleted); // Soft delete filtresi
 
         builder.Property(o => o.OrderDate).HasDefaultValueSql("SYSDATETIME()");
 

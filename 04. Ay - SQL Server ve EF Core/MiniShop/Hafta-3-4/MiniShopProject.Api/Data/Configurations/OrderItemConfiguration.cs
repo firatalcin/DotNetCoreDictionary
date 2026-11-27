@@ -16,6 +16,7 @@ public class OrderItemConfiguration: IEntityTypeConfiguration<OrderItem>
 
         // Composite primary key: (OrderId, ProductId)
         builder.HasKey(oi => new { oi.OrderId, oi.ProductId });
+        builder.HasQueryFilter(oi => !oi.IsDeleted); // Soft delete filtresi
 
         builder.Property(oi => oi.UnitPrice).HasColumnType("decimal(18,2)");
 

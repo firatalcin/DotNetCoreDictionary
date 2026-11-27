@@ -94,7 +94,29 @@ public class ProductsController : ControllerBase
         product.Stock = request.Stock;
         product.CategoryId = request.CategoryId;
 
-        await _db.SaveChangesAsync(cancellationToken); // Sadece değişen kolonlar için UPDATE
+        try
+        {
+            await _db.SaveChangesAsync(cancellationToken); // Sadece değişen kolonlar için UPDATE
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // Biz okuduktan sonra başka biri bu satırı değiştirdi (RowVersion tutmadı)
+            return Conflict("Bu ürün siz düzenlerken başka biri tarafından değiştirildi. Tekrar deneyin.");
+        }
+
+        return NoContent(); // 204
+    }
+
+    // DELETE /api/products/5
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+        var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        if (product is null)
+            return NotFound();
+
+        _db.Products.Remove(product);                  // Görünüşte silme...
+        await _db.SaveChangesAsync(cancellationToken); // ...ama override sayesinde UPDATE IsDeleted = 1
         return NoContent(); // 204
     }
 }

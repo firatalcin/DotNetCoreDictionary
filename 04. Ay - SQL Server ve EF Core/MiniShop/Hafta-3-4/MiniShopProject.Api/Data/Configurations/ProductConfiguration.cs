@@ -16,6 +16,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         });
 
         builder.HasKey(p => p.Id);
+        builder.HasQueryFilter(p => !p.IsDeleted); // Soft delete filtresi
+
+        // SQL Server'da "rowversion" kolonu; UPDATE'lerde WHERE RowVersion = @eski kontrolü eklenir
+        builder.Property(p => p.RowVersion).IsRowVersion();
 
         builder.Property(p => p.Name).IsRequired().HasMaxLength(150);
         builder.Property(p => p.Price).HasColumnType("decimal(18,2)");

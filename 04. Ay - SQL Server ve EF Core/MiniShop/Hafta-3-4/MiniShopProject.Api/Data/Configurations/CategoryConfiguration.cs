@@ -15,6 +15,10 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .IsRequired()
             .HasMaxLength(100);
         
-        builder.HasIndex(c => c.Name).IsUnique();
+        // Sadece silinmemiş kayıtlar arasında unique olsun (silinen ad tekrar kullanılabilsin)
+        builder.HasIndex(c => c.Name).IsUnique().HasFilter("[IsDeleted] = 0");
+
+        // Soft delete: Silinmiş kayıtlar hiçbir LINQ sorgusunda gelmesin
+        builder.HasQueryFilter(c => !c.IsDeleted);
     }
 }

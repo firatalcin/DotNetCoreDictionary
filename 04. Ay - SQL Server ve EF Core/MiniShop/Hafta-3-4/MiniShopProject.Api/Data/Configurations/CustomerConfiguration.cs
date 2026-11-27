@@ -15,9 +15,11 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(c => c.LastName).IsRequired().HasMaxLength(50);
         builder.Property(c => c.Email).IsRequired().HasMaxLength(150);
 
-        // Değeri C# değil, SQL Server versin (DEFAULT SYSDATETIME())
-        builder.Property(c => c.CreatedAt).HasDefaultValueSql("SYSDATETIME()");
 
-        builder.HasIndex(c => c.Email).IsUnique();
+        // Sadece silinmemiş kayıtlar arasında unique olsun (silinen e-posta tekrar kullanılabilsin)
+        builder.HasIndex(c => c.Email).IsUnique().HasFilter("[IsDeleted] = 0");
+
+        // Soft delete: Silinmiş kayıtlar hiçbir LINQ sorgusunda gelmesin
+        builder.HasQueryFilter(c => !c.IsDeleted);
     }
 }

@@ -20,4 +20,34 @@ public class MiniShopDbContext : DbContext
         // Bu projedeki tüm IEntityTypeConfiguration sınıflarını bulup uygular
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(MiniShopDbContext).Assembly);
     }
+
+    // Tüm kayıtlar buradan geçtiği için tarih ve soft delete işini tek noktada yapıyoruz
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var now = DateTime.UtcNow;
+
+        // ToList(): Döngü içinde State değiştireceğimiz için listenin kopyası üzerinde dönüyoruz
+        foreach (var entry in ChangeTracker.Entries<BaseEntity>().ToList())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedDate = now;
+                    break;
+
+                case EntityState.Modified:
+                    entry.Entity.ModifiedDate = now;
+                    break;
+
+                case EntityState.Deleted:
+                    // DELETE yerine UPDATE yapılsın (Soft Delete)
+                    entry.State = EntityState.Modified;
+                    entry.Entity.IsDeleted = true;
+                    entry.Entity.ModifiedDate = now;
+                    break;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
 }
