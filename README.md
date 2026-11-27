@@ -4,8 +4,10 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/C%23-14-239120?style=for-the-badge&logo=csharp&logoColor=white" alt="C#" />
-  <img src="https://img.shields.io/badge/.NET-10-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/.NET-10%20%7C%2011-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET 10 | 11" />
   <img src="https://img.shields.io/badge/ASP.NET%20Core-Web%20API-5C2D91?style=for-the-badge&logo=dotnet&logoColor=white" alt="ASP.NET Core" />
+  <img src="https://img.shields.io/badge/SQL%20Server-T--SQL-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" alt="SQL Server" />
+  <img src="https://img.shields.io/badge/EF%20Core-ORM-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt="EF Core" />
   <img src="https://img.shields.io/badge/Dil-T%C3%BCrk%C3%A7e-E30A17?style=for-the-badge" alt="Türkçe" />
 </p>
 
@@ -27,6 +29,7 @@
 | 1 | [C#, Modern .NET ve Developer Temeli](#-01-ay--c-modern-net-ve-developer-temeli) | 29 konu | ✅ | — | ![](https://img.shields.io/badge/-Tamamland%C4%B1-2ea44f?style=flat-square) |
 | 2 | [.NET Runtime, Memory ve Async/Concurrency](#-02-ay--net-runtime-memory-ve-asyncconcurrency) | 25 konu | ✅ | — | ![](https://img.shields.io/badge/-Tamamland%C4%B1-2ea44f?style=flat-square) |
 | 3 | [ASP.NET Core Web API, REST ve API Security](#-03-ay--aspnet-core-web-api-rest-ve-api-security) | 30 konu | ✅ | OrderAPI | ![](https://img.shields.io/badge/-Tamamland%C4%B1-2ea44f?style=flat-square) |
+| 4 | [SQL, EF Core ve Database Security](#-04-ay--sql-ef-core-ve-database-security) | 28 konu | ✅ | MiniShop | ![](https://img.shields.io/badge/-Tamamland%C4%B1-2ea44f?style=flat-square) |
 
 ---
 
@@ -68,6 +71,20 @@ HTTP ve REST semantiğinden başlayıp ASP.NET Core'un çekirdeğine iniyor: hos
 
 ---
 
+## [💾 04. Ay — SQL, EF Core ve Database Security](04.%20Ay%20-%20SQL%20Server%20ve%20EF%20Core)
+
+> Verinin dili: ORM'in arkasında ne olduğunu bilerek hızlı, tutarlı ve güvenli veri erişimi kurmak.
+
+İlişkisel model, T-SQL veri tipleri, constraint'ler ve normalizasyonla başlıyor; filtreleme, gruplama, JOIN, CTE, view ve window fonksiyonlarıyla sorgulamaya geçiyor. Performans bölümünde clustered/non-clustered/covering index, execution plan okuma ve SARGable sorgular; eşzamanlılık tarafında ACID, isolation level'lar, blocking ve deadlock işleniyor. EF Core bölümü DbContext lifecycle, Fluent API, migration'lar, Change Tracker, loading stratejileri, N+1 ve DTO projection'ı kapsıyor. Ay; split query, toplu işlemler, RowVersion ile optimistic concurrency, raw SQL, SQL Injection, connection string güvenliği, least privilege, soft delete ve global query filter'larla tamamlanıyor.
+
+![](https://img.shields.io/badge/T--SQL-CC2927?style=flat-square) ![](https://img.shields.io/badge/Index%20%26%20Execution%20Plan-CC2927?style=flat-square) ![](https://img.shields.io/badge/Transaction%20%26%20Locking-CC2927?style=flat-square) ![](https://img.shields.io/badge/EF%20Core-CC2927?style=flat-square) ![](https://img.shields.io/badge/Optimistic%20Concurrency-CC2927?style=flat-square) ![](https://img.shields.io/badge/SQL%20Injection-CC2927?style=flat-square) ![](https://img.shields.io/badge/Least%20Privilege-CC2927?style=flat-square)
+
+🛠️ **Proje — [MiniShop](04.%20Ay%20-%20SQL%20Server%20ve%20EF%20Core/MiniShop):** Ay boyunca büyüyen bir e-ticaret veritabanı. İlk hafta SSMS'de şema, örnek veri ve raporlar yazılıyor; ikinci hafta index'lerle performans ölçülüyor ve transaction'lı `sp_CreateOrder` stored procedure'ü ekleniyor. Son iki hafta proje EF Core Code First ile bir Web API'ye dönüşüyor: ürün CRUD'u, sipariş oluşturma, view üzerinden stok raporu, soft delete, RowVersion ile çakışma kontrolü, User Secrets'ta tutulan bağlantı cümlesi ve yalnızca okuma/yazma yetkisi olan bir veritabanı kullanıcısı.
+
+📄 [Konu Özetleri](04.%20Ay%20-%20SQL%20Server%20ve%20EF%20Core/04.%20Ay%20-%20SQL%2C%20EF%20Core%20ve%20Database%20Security.md) &nbsp;•&nbsp; 📝 [Sertifika Sınavı](04.%20Ay%20-%20SQL%20Server%20ve%20EF%20Core/04.Ay-SertifikaSinavi-Cevaplar.md) &nbsp;•&nbsp; 🛠️ [MiniShop Projesi](04.%20Ay%20-%20SQL%20Server%20ve%20EF%20Core/MiniShop)
+
+---
+
 ## 📚 Nasıl Kullanılır?
 
 - **Öğrenmek için:** Ayları sırayla takip et; her konu bir öncekinin üzerine kurulu.
@@ -81,6 +98,19 @@ git clone https://github.com/firatalcin/DotNetCoreDictionary.git
 ```bash
 dotnet test "03. Ay - ASP.NET Core Web API, REST ve API Security/OrderManagement/OrderManagement.slnx"
 ```
+
+**MiniShop (4. Ay)** için SQL Server gerekiyor:
+
+1. `Hafta-1` ve `Hafta-2` klasörlerindeki scriptleri SSMS'de numara sırasıyla çalıştır (`MiniShopDb_Sql` veritabanını oluşturur).
+2. Hafta 3-4'te şemayı EF Core migration'ları kuruyor. Tablo adları 1. haftayla aynı olduğu için ayrı bir veritabanı (`MiniShopDb_Ef`) kullan. Bağlantı cümlesini User Secrets'a yaz ve migration'ları uygula:
+
+```bash
+cd "04. Ay - SQL Server ve EF Core/MiniShop/Hafta-3-4/MiniShopProject.Api"
+dotnet user-secrets set "ConnectionStrings:MiniShopDb" "Server=.;Database=MiniShopDb_Ef;Trusted_Connection=True;TrustServerCertificate=True"
+dotnet ef database update
+```
+
+3. `Hafta-3-4` klasöründeki `01_vw_StockStatus.sql` ve `02_minishop_app_User.sql` scriptlerini, baştaki `USE` satırını EF veritabanına çevirerek çalıştır. Ardından API'yi başlat: `dotnet run`. İstersen bağlantı cümlesini kısıtlı yetkili `minishop_app` kullanıcısıyla değiştirebilirsin.
 
 ---
 
